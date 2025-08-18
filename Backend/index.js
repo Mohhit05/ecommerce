@@ -4,7 +4,7 @@ const dbConnect = require("./config/dbConnect");
 const { notFound, errorHandler } = require("./middlewares/errorHandler");
 const app = express();
 const dotenv = require("dotenv").config();
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 const authRouter = require("./routes/authRoute");
 const productRouter = require("./routes/productRoute");
 const blogRouter = require("./routes/blogRoute");
@@ -21,7 +21,10 @@ const cors = require("cors");
 
 dbConnect();
 app.use(morgan("dev"));
-app.use(cors());
+app.use(cors({
+    origin: process.env.FRONTEND_URL,
+    credentials: true,
+  }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
